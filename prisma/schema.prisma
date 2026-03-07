@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// A Project maps 1:1 to a hostname (e.g. "acmecorp.com")
+model Project {
+  id        String   @id @default(cuid())
+  hostname  String   @unique
+  name      String
+  pages     Page[]
+  createdAt DateTime @default(now())
+}
+
+// A Page is a specific URL within a Project (e.g. "/login")
+model Page {
+  id        String    @id @default(cuid())
+  projectId String
+  project   Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  url       String    // full URL e.g. "https://acmecorp.com/login"
+  path      String    // pathname only e.g. "/login"
+  title     String    @default("")
+  locators  Locator[]
+  createdAt DateTime  @default(now())
+
+  @@unique([projectId, url])
+}
+
+// A Locator is a tracked element, always stored under a Page
+model Locator {
+  id             String        @id @default(cuid())
+  pageId         String
+  page           Page          @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  name           String
+  originalCss    String?
+  originalXpath  String?
+  status         String        @default("healthy")
+  message        String?
+  aiContext      String?
+  screenshot     String?
+  lastVerifiedAt DateTime      @default(now())
+  snapshots      DomSnapshot[]
+
+  @@unique([pageId, name])
+}
+
+model DomSnapshot {
+  id             String  @id @default(cuid())
+  locatorId      String
+  locator        Locator @relation(fields: [locatorId], references: [id], onDelete: Cascade)
+  tagName        String
+  attributes     String
+  innerTextHash  String?
+  parentSnapshot String?
+}

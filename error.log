@@ -1,0 +1,37 @@
+C:\Projects\Seismite\backend\node_modules\@prisma\client\src\runtime\getPrismaClient.ts:260
+        throw new PrismaClientInitializationError(
+              ^
+
+
+PrismaClientInitializationError: `PrismaClient` needs to be constructed with a non-empty, valid `PrismaClientOptions`:
+
+```
+new PrismaClient({
+  ...
+})
+```
+
+or
+
+```
+constructor() {
+  super({ ... });
+}
+```
+          
+    at new t (C:\Projects\Seismite\backend\node_modules\@prisma\client\src\runtime\getPrismaClient.ts:260:15)
+    at express (C:\Projects\Seismite\backend\server.ts:6:16)
+    at Object.<anonymous> (C:\Projects\Seismite\backend\server.ts:153:2)
+    at Module._compile (node:internal/modules/cjs/loader:1738:14)
+    at Object.transformer (C:\Projects\Seismite\backend\node_modules\tsx\dist\register-D46fvsV_.cjs:3:1104)
+    at Module.load (node:internal/modules/cjs/loader:1470:32)
+    at Module._load (node:internal/modules/cjs/loader:1290:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:238:24)
+    at cjsLoader (node:internal/modules/esm/translators:317:5) {
+  clientVersion: '7.4.2',
+  errorCode: undefined,
+  retryable: undefined
+}
+
+Node.js v24.6.0
