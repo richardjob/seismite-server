@@ -1,6 +1,6 @@
 ﻿import { useState, useEffect, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { XCircle, AlertTriangle, CheckCircle2, Search, Filter, Plus, FileCode2, ActivitySquare, Trash2, ChevronLeft, ChevronRight, Globe, LayoutDashboard, Camera, Copy, Check } from 'lucide-react';
+import { XCircle, AlertTriangle, CheckCircle2, Search, Filter, Plus, FileCode2, Trash2, ChevronLeft, ChevronRight, Globe, LayoutDashboard, Camera, Copy, Check } from 'lucide-react';
 import { getApiUrl } from '../utils/config';
 
 interface Locator {

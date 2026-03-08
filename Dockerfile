@@ -29,7 +29,7 @@ COPY --from=dashboard-build /app/dist ./dashboard/dist
 
 # Set the port
 ENV PORT=3000
-ENV DATABASE_URL="file:./prisma/default.db"
+ENV DATABASE_URL="file:./default.db"
 
 # Expose the API port
 EXPOSE 3000
