@@ -59,8 +59,8 @@
                 Redefining Automation with <br /><span class="gradient-text">AI Context</span>
             </h1>
             <p class="mt-4 max-w-2xl text-xl text-gray-400 mx-auto mb-10">
-                A seamless triad of a centralized Dashboard, a powerful headless Server, and an intuitive Chrome
-                Extension—built ground-up for Model Context Protocol (MCP) integration.
+                A powerful binary ecosystem consisting of the Seismite Core and the intuitive Chrome Extension—built
+                ground-up for Model Context Protocol (MCP) integration.
             </p>
             <div class="flex flex-col sm:flex-row justify-center gap-4">
                 <a href="#ecosystem"
@@ -79,35 +79,14 @@
     <section id="ecosystem" class="py-20 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">The Seismite <span
-                        class="text-brand-400">Trifecta</span></h2>
-                <p class="text-gray-400 max-w-2xl mx-auto">Three decoupled, yet deeply integrated components working in
-                    perfect harmony to map, manage, and automate the modern web.</p>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">The Seismite <span class="text-brand-400">Duo</span>
+                </h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Two powerful components working in perfect harmony to map,
+                    manage, and automate the modern web.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Dashboard -->
-                <div
-                    class="glass p-8 rounded-2xl border border-white/10 card-hover relative overflow-hidden group flex flex-col h-full">
-                    <div
-                        class="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl -mr-10 -mt-10 transition-all group-hover:bg-blue-500/20">
-                    </div>
-                    <div
-                        class="w-14 h-14 bg-blue-500/20 rounded-xl flex items-center justify-center mb-6 border border-blue-500/30 shrink-0">
-                        <i class="fas fa-chart-line text-2xl text-blue-400"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-3 text-white">Dashboard</h3>
-                    <p class="text-gray-400 mb-6 flex-grow">The centralized command center. Manage locators, visualize
-                        AI-ready UI contexts, and organize automation elements across all your web properties
-                        seamlessly.</p>
-                    <a href="https://github.com/richardjob/seismite-dashboard" target="_blank"
-                        class="text-blue-400 font-medium hover:text-blue-300 flex items-center mt-auto w-max">
-                        View Repository <i
-                            class="fas fa-arrow-right ml-2 text-sm transition-transform group-hover:translate-x-1"></i>
-                    </a>
-                </div>
-
-                <!-- Server -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <!-- Seismite Core -->
                 <div
                     class="glass p-8 rounded-2xl border border-white/10 card-hover relative overflow-hidden group flex flex-col h-full">
                     <div
@@ -115,12 +94,14 @@
                     </div>
                     <div
                         class="w-14 h-14 bg-purple-500/20 rounded-xl flex items-center justify-center mb-6 border border-purple-500/30 shrink-0">
-                        <i class="fas fa-server text-2xl text-purple-400"></i>
+                        <i class="fas fa-microchip text-2xl text-purple-400"></i>
                     </div>
-                    <h3 class="text-2xl font-bold mb-3 text-white">Server Core</h3>
-                    <p class="text-gray-400 mb-6 flex-grow">A robust backend powered by Prisma ORM and Zod validations.
-                        It acts as the anchor, storing DOM snapshots, resolving queries, and exposing the crucial <span
-                            class="text-purple-300">MCP endpoints</span>.</p>
+                    <h3 class="text-2xl font-bold mb-3 text-white">Seismite Core</h3>
+                    <p class="text-gray-400 mb-6 flex-grow">A unified powerhouse containing the <span
+                            class="text-white font-semibold">API</span>, <span class="text-white font-semibold">MCP
+                            endpoints</span>, and the <span class="text-white font-semibold">Management
+                            Dashboard</span>. Visualize AI-ready UI contexts and sync data flawlessly with Prisma ORM.
+                    </p>
                     <a href="https://github.com/richardjob/seismite-server" target="_blank"
                         class="text-purple-400 font-medium hover:text-purple-300 flex items-center mt-auto w-max">
                         View Repository <i
@@ -141,7 +122,7 @@
                     <h3 class="text-2xl font-bold mb-3 text-white">Extension</h3>
                     <p class="text-gray-400 mb-6 flex-grow">Your interactive bridge. The Chrome extension allows
                         point-and-click element capture directly in the browser, compiling contextual DOM states
-                        instantly for the server.</p>
+                        instantly for the Core Server.</p>
                     <a href="https://github.com/richardjob/seismite-extension" target="_blank"
                         class="text-brand-400 font-medium hover:text-brand-300 flex items-center mt-auto w-max">
                         View Repository <i
@@ -165,7 +146,7 @@
                             class="gradient-text">Model Context Protocol</span> Integration</h2>
                     <p class="text-lg text-gray-400 mb-6">
                         Seismite isn't just a locator manager—it's an AI's eyes on the web. Through standard MCP
-                        endpoints exposed by the server, AI programming agents like Claude or Cursor can request
+                        endpoints exposed by the Seismite Core, AI programming agents like Claude or Cursor can request
                         targeted, sanitized DOM contexts of UI elements in real-time.
                     </p>
                     <ul class="space-y-4 mb-8">
@@ -175,7 +156,7 @@
                                 <i class="fas fa-check text-xs"></i>
                             </div>
                             <p class="ml-3 text-gray-300"><strong class="text-white">Smart Context Fetching:</strong>
-                                The server provides a stateless MCP tool allowing LLMs to fetch localized HTML context
+                                The Core provides a stateless MCP tool allowing LLMs to fetch localized HTML context
                                 for specific locators.</p>
                         </li>
                         <li class="flex items-start">
@@ -184,7 +165,7 @@
                                 <i class="fas fa-check text-xs"></i>
                             </div>
                             <p class="ml-3 text-gray-300"><strong class="text-white">Self-Healing Automation:</strong>
-                                When UIs change, the AI reads the structural context from the Dashboard to immediately
+                                When UIs change, the AI reads the structural context from the Core to immediately
                                 formulate updated robust selectors.</p>
                         </li>
                         <li class="flex items-start">
@@ -202,7 +183,7 @@
                                 <i class="fas fa-check text-xs"></i>
                             </div>
                             <p class="ml-3 text-gray-300"><strong class="text-white">Dynamic Test Execution:</strong>
-                                Automation frameworks fetch locators directly from the Seismite server at runtime. Say
+                                Automation frameworks fetch locators directly from the Seismite Core at runtime. Say
                                 goodbye to hardcoded selectors—your tests always use the latest healed locators
                                 automatically.</p>
                         </li>
@@ -375,8 +356,8 @@
                         class="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6 border border-white/10 text-xl font-bold text-white group-hover:border-brand-400/50 transition-colors">
                         1
                     </div>
-                    <h3 class="text-2xl font-bold mb-3 text-white">Spin Up the Server</h3>
-                    <p class="text-gray-400">Deploy the Seismite Server locally. It acts as the central hub—managing the
+                    <h3 class="text-2xl font-bold mb-3 text-white">Spin Up the Core</h3>
+                    <p class="text-gray-400">Deploy the Seismite Core locally. It acts as the central hub—managing the
                         database, hosting the dashboard, and providing the MCP and API endpoints for your framework.</p>
                 </div>
 
@@ -388,8 +369,8 @@
                     </div>
                     <h3 class="text-2xl font-bold mb-3 text-white">Map Your Locators</h3>
                     <p class="text-gray-400">Install the Chrome Extension. Navigate to your target application and <span
-                            class="text-brand-400">point-and-click</span> to save UI resilient locators securely with
-                        their surrounding DOM context.</p>
+                            class="text-brand-400 font-semibold">point-and-click</span> to save UI resilient locators
+                        securely with their surrounding DOM context.</p>
                 </div>
 
                 <!-- Step 3 -->
@@ -400,7 +381,7 @@
                     </div>
                     <h3 class="text-2xl font-bold mb-3 text-white">Automate & Heal</h3>
                     <p class="text-gray-400">Configure your test framework to fetch locators dynamically. When a UI
-                        breaks, the extension spots the issue, allowing manual fixes or <span
+                        breaks, the Core spots the issue, allowing manual fixes or <span
                             class="text-purple-400 font-semibold">instant AI self-healing</span>.</p>
                 </div>
             </div>
