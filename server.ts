@@ -387,38 +387,6 @@ app.post('/api/heartbeat', async (req: Request, res: Response, next: NextFunctio
     }
 });
 
-// ─── Seed ─────────────────────────────────────────────────────────────────────
-
-async function seedDatabase() {
-    const count = await prisma.project.count();
-    if (count > 0) return;
-
-    console.log('Seeding database...');
-
-    const project = await prisma.project.create({
-        data: { hostname: 'acmecorp.com', name: 'Acme Corp' },
-    });
-
-    const pages = await Promise.all([
-        prisma.page.create({ data: { projectId: project.id, url: 'https://acmecorp.com/login', path: '/login' } }),
-        prisma.page.create({ data: { projectId: project.id, url: 'https://acmecorp.com/dashboard', path: '/dashboard' } }),
-        prisma.page.create({ data: { projectId: project.id, url: 'https://acmecorp.com/checkout', path: '/checkout' } }),
-    ]);
-
-    const [loginPage, dashPage, checkoutPage] = pages;
-
-    await prisma.locator.createMany({
-        data: [
-            { pageId: loginPage.id, name: 'Login Submit Button', type: 'css', locator: 'button[data-testid="login-submit"]', status: 'healthy' },
-            { pageId: loginPage.id, name: 'User Avatar Header', type: 'css', locator: '.header-avatar img', status: 'multiple' },
-            { pageId: dashPage.id, name: 'Navigation Home Link', type: 'css', locator: 'a.nav-home', status: 'healthy' },
-            { pageId: dashPage.id, name: 'Settings Save Button', type: 'css', locator: 'button.save-btn', status: 'healthy' },
-            { pageId: checkoutPage.id, name: 'Checkout Complete Label', type: 'css', locator: '#order-success-msg', status: 'broken' },
-        ],
-    });
-
-    console.log('Seeding complete.');
-}
 
 // ─── Error Handler ────────────────────────────────────────────────────────────
 
@@ -446,6 +414,5 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, async () => {
-    await seedDatabase();
-    console.log(`Seismite API running on http://localhost:${PORT}`);
+    console.log(`Seismite API running on PORT: ${PORT}`);
 });
