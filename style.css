@@ -13,6 +13,7 @@ body {
     background-color: var(--dark-bg);
     color: white;
     font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
 }
 
 .glass {
@@ -25,6 +26,7 @@ body {
 .gradient-text {
     background: linear-gradient(135deg, var(--brand-400), #3b82f6, #a855f7);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
