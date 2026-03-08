@@ -61,8 +61,7 @@ function createMcpServer(prisma: PrismaClient) {
                 if (search) {
                     where.OR = [
                         { name: { contains: search } },
-                        { originalCss: { contains: search } },
-                        { originalXpath: { contains: search } },
+                        { locator: { contains: search } },
                     ];
                 }
 
@@ -77,8 +76,8 @@ function createMcpServer(prisma: PrismaClient) {
                 const result = locators.map((loc: any) => ({
                     id: loc.id,
                     name: loc.name,
-                    css: loc.originalCss || '',
-                    xpath: loc.originalXpath || '',
+                    type: loc.type,
+                    locator: loc.locator,
                     status: loc.status,
                     message: loc.message || '',
                     aiContext: loc.aiContext || '',
@@ -112,19 +111,19 @@ function createMcpServer(prisma: PrismaClient) {
             inputSchema: {
                 id: z.string().describe("The unique ID of the locator to update."),
                 name: z.string().optional().describe("The new name for the locator."),
-                originalCss: z.string().optional().describe("The new CSS selector. If this field is provided, then send originalXpath as null."),
-                originalXpath: z.string().optional().describe("The new XPath selector. If this field is provided, then send originalCss as null."),
+                type: z.enum(['css', 'xpath']).optional().describe("The type of the updated locator (css or xpath)."),
+                locator: z.string().optional().describe("The new locator selector string."),
                 status: z.enum(['healthy', 'broken', 'multiple']).optional().describe("The new status (e.g., 'healthy', 'broken', 'multiple')."),
                 message: z.string().optional().describe("Optional status message or error details."),
                 aiContext: z.string().optional().describe("AI generation context or description.")
             }
         },
-        async ({ id, name, originalCss, originalXpath, status, message, aiContext }) => {
+        async ({ id, name, type, locator, status, message, aiContext }) => {
             try {
                 const data: any = {};
                 if (name !== undefined) data.name = name;
-                if (originalCss !== undefined) data.originalCss = originalCss;
-                if (originalXpath !== undefined) data.originalXpath = originalXpath;
+                if (type !== undefined) data.type = type;
+                if (locator !== undefined) data.locator = locator;
                 if (status !== undefined) data.status = status;
                 if (message !== undefined) data.message = message;
                 if (aiContext !== undefined) data.aiContext = aiContext;

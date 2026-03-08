@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
+import path from 'path';
 import { PrismaClient, Prisma } from '@prisma/client';
 import { z } from 'zod';
 import { initMcp } from './mcp';
@@ -66,8 +67,8 @@ async function findOrCreatePage(fullUrl: string) {
 const LocatorCreateSchema = z.object({
     name: z.string(),
     url: z.string().url(),
-    originalCss: z.string().nullable().optional(),
-    originalXpath: z.string().nullable().optional(),
+    type: z.enum(['css', 'xpath']),
+    locator: z.string(),
     aiContext: z.string().nullable().optional(),
     screenshot: z.string().nullable().optional(),
     expectedSnapshot: z.object({
@@ -78,8 +79,8 @@ const LocatorCreateSchema = z.object({
 });
 
 const LocatorUpdateSchema = z.object({
-    originalCss: z.string().nullable().optional(),
-    originalXpath: z.string().nullable().optional(),
+    type: z.enum(['css', 'xpath']),
+    locator: z.string(),
     aiContext: z.string().nullable().optional(),
     screenshot: z.string().nullable().optional(),
     expectedSnapshot: z.object({
@@ -179,8 +180,7 @@ app.get('/api/locators', async (req: Request, res: Response, next: NextFunction)
         if (searchTerm) {
             where.OR = [
                 { name: { contains: searchTerm } },
-                { originalCss: { contains: searchTerm } },
-                { originalXpath: { contains: searchTerm } },
+                { locator: { contains: searchTerm } },
             ];
         }
 
@@ -197,8 +197,8 @@ app.get('/api/locators', async (req: Request, res: Response, next: NextFunction)
             return res.json(locators.map(loc => ({
                 id: loc.id,
                 name: loc.name,
-                css: loc.originalCss || '',
-                xpath: loc.originalXpath || '',
+                type: loc.type,
+                locator: loc.locator,
                 status: loc.status,
                 message: loc.message || '',
                 hasAiContext: !!loc.aiContext,
@@ -232,8 +232,8 @@ app.get('/api/locators', async (req: Request, res: Response, next: NextFunction)
         const data = locators.map(loc => ({
             id: loc.id,
             name: loc.name,
-            css: loc.originalCss || '',
-            xpath: loc.originalXpath || '',
+            type: loc.type,
+            locator: loc.locator,
             status: loc.status,
             message: loc.message || '',
             hasAiContext: !!loc.aiContext,
@@ -291,8 +291,8 @@ app.post('/api/locators', async (req: Request, res: Response, next: NextFunction
             data: {
                 pageId: page.id,
                 name: body.name,
-                originalCss: body.originalCss,
-                originalXpath: body.originalXpath,
+                type: body.type,
+                locator: body.locator,
                 aiContext: body.aiContext,
                 screenshot: body.screenshot,
                 snapshots: {
@@ -323,8 +323,8 @@ app.put('/api/locators/:id', async (req: Request, res: Response, next: NextFunct
         const locator = await prisma.locator.update({
             where: { id: id as string },
             data: {
-                originalCss: body.originalCss,
-                originalXpath: body.originalXpath,
+                type: body.type,
+                locator: body.locator,
                 aiContext: body.aiContext,
                 screenshot: body.screenshot,
                 status: 'healthy',
@@ -360,6 +360,8 @@ app.delete('/api/locators/:id', async (req: Request, res: Response, next: NextFu
 app.post('/api/heartbeat', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { results } = req.body;
+        console.log(`[API] Received heartbeat with ${results?.length} results:`, JSON.stringify(results, null, 2));
+
         const validated = HeartbeatResultSchema.parse(results);
 
         await prisma.$transaction(
@@ -371,8 +373,10 @@ app.post('/api/heartbeat', async (req: Request, res: Response, next: NextFunctio
             )
         );
 
+        console.log(`[API] Successfully updated ${validated.length} locators from heartbeat.`);
         res.json({ message: `Updated ${validated.length} locators` });
     } catch (error) {
+        console.error('[API] Heartbeat transaction failed:', error);
         next(error);
     }
 });
@@ -399,11 +403,11 @@ async function seedDatabase() {
 
     await prisma.locator.createMany({
         data: [
-            { pageId: loginPage.id, name: 'Login Submit Button', originalCss: 'button[data-testid="login-submit"]', status: 'healthy' },
-            { pageId: loginPage.id, name: 'User Avatar Header', originalCss: '.header-avatar img', status: 'multiple' },
-            { pageId: dashPage.id, name: 'Navigation Home Link', originalCss: 'a.nav-home', status: 'healthy' },
-            { pageId: dashPage.id, name: 'Settings Save Button', originalCss: 'button.save-btn', status: 'healthy' },
-            { pageId: checkoutPage.id, name: 'Checkout Complete Label', originalCss: '#order-success-msg', status: 'broken' },
+            { pageId: loginPage.id, name: 'Login Submit Button', type: 'css', locator: 'button[data-testid="login-submit"]', status: 'healthy' },
+            { pageId: loginPage.id, name: 'User Avatar Header', type: 'css', locator: '.header-avatar img', status: 'multiple' },
+            { pageId: dashPage.id, name: 'Navigation Home Link', type: 'css', locator: 'a.nav-home', status: 'healthy' },
+            { pageId: dashPage.id, name: 'Settings Save Button', type: 'css', locator: 'button.save-btn', status: 'healthy' },
+            { pageId: checkoutPage.id, name: 'Checkout Complete Label', type: 'css', locator: '#order-success-msg', status: 'broken' },
         ],
     });
 
@@ -414,6 +418,18 @@ async function seedDatabase() {
 
 initMcp(app, prisma);
 
+// ─── Static Files & SPA Fallback ──────────────────────────────────────────────
+
+const uiPath = path.join(__dirname, 'dashboard', 'dist');
+app.use(express.static(uiPath));
+
+app.use((req: Request, res: Response, next: NextFunction) => {
+    if (req.method === 'GET' && !req.path.startsWith('/api/')) {
+        res.sendFile(path.join(uiPath, 'index.html'));
+    } else {
+        next();
+    }
+});
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     console.error('API Error:', err);
     if (err instanceof z.ZodError) {

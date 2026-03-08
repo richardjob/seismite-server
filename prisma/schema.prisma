@@ -36,8 +36,8 @@ model Locator {
   pageId         String
   page           Page          @relation(fields: [pageId], references: [id], onDelete: Cascade)
   name           String
-  originalCss    String?
-  originalXpath  String?
+  type           String
+  locator        String
   status         String        @default("healthy")
   message        String?
   aiContext      String?
