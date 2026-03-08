@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seismite | The Ultimate Test Automation Ecosystem</title>
+    <meta name="description"
+        content="A powerful suite of tools for modern test automation: Dashboard, Extension, and Server. Built for the MCP era.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <div class="bg-gradient"></div>
+    <div class="hero-overlay"></div>
+
+    <nav>
+        <a href="#" class="logo">
+            <img src="seismite_logo_icon_1772968420982.png" alt="Seismite Logo">
+            Seismite
+        </a>
+        <div class="nav-links">
+            <a href="https://seismite.richardjob.in/dashboard" class="btn btn-primary"
+                style="font-size: 0.9rem; padding: 10px 20px;">Open Dashboard</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <h1 class="gradient-text">One Ecosystem.<br>Unlimited Speed.</h1>
+            <p>Seismite brings your testing workflow into the AI era. Robust locators, instant context, and a powerful
+                MCP-ready server at your fingertips.</p>
+            <div class="hero-btns">
+                <a href="#features" class="btn btn-primary">Explore Features</a>
+            </div>
+        </section>
+
+        <section id="features" class="features">
+            <div class="glass feature-card">
+                <div class="feature-icon"><i data-lucide="layout-dashboard"></i></div>
+                <h3>Intelligent Dashboard</h3>
+                <p>Monitor your locator health across all projects in real-time. Beautiful, intuitive, and built for
+                    scale.</p>
+            </div>
+            <div class="glass feature-card">
+                <div class="feature-icon"><i data-lucide="chrome"></i></div>
+                <h3>Browser Extension</h3>
+                <p>Capture locators with AI context directly from your browser. No manual selector writing required.</p>
+            </div>
+            <div class="glass feature-card">
+                <div class="feature-icon"><i data-lucide="server"></i></div>
+                <h3>MCP Ready Server</h3>
+                <p>Plug into the Model Context Protocol ecosystem. Leverage AI to maintain and heal your tests
+                    automatically.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer
+        style="padding: 60px 5%; text-align: center; color: var(--text-muted); border-top: 1px solid var(--glass-border);">
+        <p>&copy; 2026 Seismite. Built for the future of testing.</p>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // Subtle scroll animation for glass cards
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = "1";
+                    entry.target.style.transform = "translateY(0)";
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.style.opacity = "0";
+            card.style.transform = "translateY(20px)";
+            card.style.transition = "all 0.6s cubic-bezier(0.4, 0, 0.2, 1)";
+            observer.observe(card);
+        });
+    </script>
+</body>
+
+</html>
