@@ -5,7 +5,13 @@ import { PrismaClient, Prisma } from '@prisma/client';
 import { z } from 'zod';
 import { initMcp } from './mcp';
 
-const prisma = new PrismaClient({});
+const prisma = new PrismaClient({
+    datasources: {
+        db: {
+            url: process.env.DATABASE_URL || 'file:./prisma/default.db',
+        },
+    },
+});
 const app = express();
 
 app.use(cors());
@@ -110,15 +116,15 @@ app.get('/api/projects', async (req: Request, res: Response, next: NextFunction)
         });
 
         const result = projects
-            .map(p => ({
+            .map((p: any) => ({
                 id: p.id,
                 hostname: p.hostname,
                 name: p.name,
                 pageCount: p._count.pages,
-                locatorCount: p.pages.reduce((sum, pg) => sum + pg._count.locators, 0),
+                locatorCount: p.pages.reduce((sum: any, pg: any) => sum + pg._count.locators, 0),
                 createdAt: p.createdAt,
             }))
-            .filter(p => p.locatorCount > 0);
+            .filter((p: any) => p.locatorCount > 0);
 
         res.json(result);
     } catch (error) {
@@ -194,7 +200,7 @@ app.get('/api/locators', async (req: Request, res: Response, next: NextFunction)
                 },
             });
 
-            return res.json(locators.map(loc => ({
+            return res.json(locators.map((loc: any) => ({
                 id: loc.id,
                 name: loc.name,
                 type: loc.type,
@@ -229,7 +235,7 @@ app.get('/api/locators', async (req: Request, res: Response, next: NextFunction)
             prisma.locator.count({ where }),
         ]);
 
-        const data = locators.map(loc => ({
+        const data = locators.map((loc: any) => ({
             id: loc.id,
             name: loc.name,
             type: loc.type,
@@ -306,8 +312,8 @@ app.post('/api/locators', async (req: Request, res: Response, next: NextFunction
         });
 
         res.json({ message: 'Locator tracked successfully', id: locator.id });
-    } catch (error) {
-        if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+    } catch (error: any) {
+        if (error.code === 'P2002') {
             return res.status(409).json({ error: 'A locator with this name already exists on this page.' });
         }
         next(error);

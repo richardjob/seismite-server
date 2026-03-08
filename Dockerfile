@@ -29,9 +29,10 @@ COPY --from=dashboard-build /app/dist ./dashboard/dist
 
 # Set the port
 ENV PORT=3000
+ENV DATABASE_URL="file:./prisma/default.db"
 
 # Expose the API port
 EXPOSE 3000
 
 # Run the server
-CMD ["npx", "tsx", "server.ts"]
+CMD ["sh", "-c", "npx prisma db push --accept-data-loss && npx tsx server.ts"]
